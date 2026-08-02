@@ -1,0 +1,12 @@
+openai
+langgraph
+langchain-core
+pandas
+faker
+python-dotenv
+pywin32
+gspread
+google-auth
+openpyxl
+loguru
+tenacity
