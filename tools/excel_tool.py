@@ -1,51 +1,20 @@
-import os
 import win32com.client
+import os
 
+from tools.csv_tool import CSV_PATH
 
-class ExcelTool:
+def import_excel():
 
-    def __init__(self, output_dir="output"):
-        self.output_dir = output_dir
-        os.makedirs(output_dir, exist_ok=True)
+    excel = win32com.client.Dispatch("Excel.Application")
 
-    def import_csv_to_excel(self, csv_path):
+    wb = excel.Workbooks.Open(os.path.abspath(CSV_PATH))
 
-        excel = None
-        workbook = None
+    wb.SaveAs(
+        os.path.abspath("output/employees.xlsx"),
+        FileFormat=51,
+    )
 
-        try:
-            excel = win32com.client.Dispatch("Excel.Application")
-            excel.Visible = True
-            excel.DisplayAlerts = False
+    wb.Close()
+    excel.Quit()
 
-            workbook = excel.Workbooks.Open(os.path.abspath(csv_path))
-
-            xlsx_path = os.path.abspath(
-                os.path.join(self.output_dir, "employees.xlsx")
-            )
-
-            workbook.SaveAs(
-                xlsx_path,
-                FileFormat=51  # Excel Workbook (.xlsx)
-            )
-
-            workbook.Close(SaveChanges=True)
-            excel.Quit()
-
-            return {
-                "success": True,
-                "xlsx_path": xlsx_path
-            }
-
-        except Exception as e:
-
-            if workbook:
-                workbook.Close(False)
-
-            if excel:
-                excel.Quit()
-
-            return {
-                "success": False,
-                "error": str(e)
-            }
+    return "Excel created successfully."

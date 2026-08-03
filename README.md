@@ -2,29 +2,30 @@
 
 ## Overview
 
-Employee AI Agent is an autonomous AI application that accepts a natural language request and performs spreadsheet automation using reusable tools.
+This project is an AI-powered employee automation application built using Python, LangChain, and OpenAI.
 
-The agent can:
+The application accepts a natural language prompt, uses an LLM to understand the request, and automatically calls the required tools to complete the task.
 
-- Generate realistic employee data
-- Create a CSV file
+The current workflow can:
+
+- Generate sample employee data
+- Save the data as a CSV file
 - Import the CSV into Microsoft Excel
-- Save the workbook as an Excel file
 - Upload the same data to Google Sheets
-- Report the execution status of each step
 
 ---
 
-## Features
+## Technologies
 
-- Natural language input
-- OpenAI powered decision making
-- Modular tool architecture
-- CSV generation using Faker
-- Microsoft Excel automation using pywin32
-- Google Sheets integration using Google Sheets API
-- Error handling
-- Reusable tools
+- Python
+- LangChain
+- OpenAI GPT-4.1
+- Pandas
+- Faker
+- pywin32
+- Google Sheets API
+- gspread
+- python-dotenv
 
 ---
 
@@ -33,58 +34,47 @@ The agent can:
 ```text
 employee-ai-agent/
 
-│── tools/
+├── tools/
 │   ├── csv_tool.py
 │   ├── excel_tool.py
-│   └── sheets_tool.py
+│   ├── sheets_tool.py
+│   └── agent_tools.py
 │
-│── output/
-│
-│── credentials.json
-│── main.py
-│── requirements.txt
-│── .env.example
-│── README.md
+├── output/
+├── main.py
+├── requirements.txt
+├── README.md
+├── .env.example
+└── credentials.json
 ```
 
 ---
 
-## Technologies Used
+## How it works
 
-- Python
-- OpenAI API
-- LangChain
-- Pandas
-- Faker
-- Google Sheets API
-- pywin32
-- python-dotenv
+The user enters a prompt.
+
+The LangChain agent sends the request to OpenAI.
+
+Based on the prompt, the LLM decides which tool(s) should be executed.
+
+The available tools are:
+
+- Generate Employee CSV
+- Import CSV into Excel
+- Upload CSV to Google Sheets
+
+Finally, the agent returns the result to the user.
 
 ---
 
-## Installation
+## Setup
 
-Clone the repository
-
-```bash
-git clone <your-github-repository>
-```
-
-Move into the project
-
-```bash
-cd employee-ai-agent
-```
-
-Install dependencies
+Install the required packages.
 
 ```bash
 pip install -r requirements.txt
 ```
-
----
-
-## Environment Variables
 
 Create a `.env` file.
 
@@ -92,34 +82,13 @@ Create a `.env` file.
 OPENAI_API_KEY=your_openai_api_key
 ```
 
----
+Download your Google Service Account credentials and save them as:
 
-## Google Sheets Setup
-
-1. Create a Google Cloud Project
-
-2. Enable
-
-- Google Sheets API
-- Google Drive API
-
-3. Create a Service Account
-
-4. Download
-
-```
+```text
 credentials.json
 ```
 
-5. Place it inside the project root.
-
-6. Share your Google Sheet with the Service Account email.
-
-Example
-
-```
-employee-agent@your-project.iam.gserviceaccount.com
-```
+Share your Google Sheet with the service account email.
 
 ---
 
@@ -133,85 +102,33 @@ python main.py
 
 ## Example Prompt
 
-```
+```text
 Create a sample employee CSV and import it into Excel and Google Sheets.
 ```
 
 ---
 
-## Workflow
+## Output
 
-```
-User Prompt
-      │
-      ▼
-OpenAI
-      │
-      ▼
-Workflow Decision
-      │
-      ▼
-Generate CSV
-      │
-      ▼
-Import into Excel
-      │
-      ▼
-Upload to Google Sheets
-      │
-      ▼
-Execution Report
-```
+The application will:
 
----
-
-## Sample Output
-
-```
-Generating CSV...
-
-CSV created successfully.
-
-Importing into Excel...
-
-Excel workbook saved.
-
-Uploading to Google Sheets...
-
-Upload successful.
-
-Workflow completed successfully.
-```
-
----
-
-## Error Handling
-
-The application handles:
-
-- Invalid API Key
-- Missing Google credentials
-- Excel automation failures
-- Google Sheets upload failures
-- CSV generation errors
+- Generate employee data
+- Create a CSV file
+- Create an Excel workbook
+- Upload the data to Google Sheets
+- Display the final result
 
 ---
 
 ## Future Improvements
 
-- Multi-agent workflow
-- LangGraph integration
-- Conversation memory
-- Support for XLSX and ODS
-- Retry mechanism
-- Docker deployment
-- Unit tests
-- Structured logging
+- Add more tools
+- Support more spreadsheet operations
+- Add conversation memory
+- Build a multi-agent workflow using LangGraph
 
 ---
 
 ## Author
 
-Your Name
-
-AI Engineer Assessment
+Chirag Pareta

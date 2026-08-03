@@ -1,53 +1,29 @@
-import gspread
 import pandas as pd
+import gspread
+
 from google.oauth2.service_account import Credentials
+from tools.csv_tool import CSV_PATH
 
+SHEET_ID = "1aLVsbWwPDD5T4GQaWu9upCnA-I63GJCkRV067Hv4hk4"
 
-class GoogleSheetsTool:
+def upload_google_sheet():
 
-    def __init__(self, credentials_path="credentials.json"):
-
-        scopes = [
+    creds = Credentials.from_service_account_file(
+        "credentials.json",
+        scopes=[
             "https://www.googleapis.com/auth/spreadsheets",
             "https://www.googleapis.com/auth/drive",
-        ]
+        ],
+    )
 
-        creds = Credentials.from_service_account_file(
-            credentials_path,
-            scopes=scopes,
-        )
+    client = gspread.authorize(creds)
 
-        self.client = gspread.authorize(creds)
+    sheet = client.open_by_key(SHEET_ID).sheet1
 
-    def upload_csv(self, csv_path):
+    df = pd.read_csv(CSV_PATH)
 
-        try:
+    sheet.clear()
 
-            SHEET_ID = "1aLVsbWwPDD5T4GQaWu9upCnA-I63GJCkRV067Hv4hk4"
+    sheet.update([df.columns.tolist()] + df.values.tolist())
 
-            spreadsheet = self.client.open_by_key(SHEET_ID)
-
-            worksheet = spreadsheet.sheet1
-
-            df = pd.read_csv(csv_path)
-
-            worksheet.clear()
-
-            worksheet.update(
-                [df.columns.values.tolist()] + df.values.tolist()
-            )
-
-            return {
-                "success": True,
-                "sheet_url": spreadsheet.url,
-            }
-
-        except Exception as e:
-            import traceback
-
-            traceback.print_exc()
-
-            return {
-                "success": False,
-                "error": repr(e)
-    }
+    return "Uploaded successfully."
